@@ -38,3 +38,8 @@ export const changePassword = async (data: ChangePasswordData) => {
   const response = await api.post('/auth/change-password', data)
   return response.data
 }
+
+export const exchangeCodeForToken = async (code: string) => {
+  const response = await api.post('/auth/github/callback', { code })
+  return response.data
+}

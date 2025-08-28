@@ -1,50 +1,62 @@
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import { useMutation } from '@tanstack/react-query'
-import { changePassword } from '../../api/auth'
-import { toast } from 'react-hot-toast'
-import { motion } from 'framer-motion'
-import Button from '../../components/ui/Button'
-import Input from '../../components/ui/Input'
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import { changePassword } from "../../api/auth";
+import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
 
 const schema = yup.object().shape({
-  currentPassword: yup.string().required('Contraseña actual es requerida'),
+  currentPassword: yup.string().required("Contraseña actual es requerida"),
   newPassword: yup
     .string()
-    .min(6, 'La nueva contraseña debe tener al menos 6 caracteres')
-    .required('Nueva contraseña es requerida'),
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula")
+    .matches(/[a-z]/, "Debe contener al menos una letra minúscula")
+    .matches(/[0-9]/, "Debe contener al menos un número")
+    .matches(/[^A-Za-z0-9]/, "Debe contener al menos un carácter especial")
+    .required("Nueva contraseña es requerida"),
   confirmNewPassword: yup
     .string()
-    .oneOf([yup.ref('newPassword')], 'Las contraseñas no coinciden')
-    .required('Confirma la nueva contraseña'),
-})
+    .oneOf([yup.ref("newPassword")], "Las contraseñas no coinciden")
+    .required("Confirma la nueva contraseña"),
+});
 
-type FormData = yup.InferType<typeof schema>
+type FormData = yup.InferType<typeof schema>;
 
 const ChangePassword = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
-  })
+  });
 
   const mutation = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      toast.success('Contraseña actualizada correctamente')
+      toast.success("Contraseña actualizada correctamente");
+      navigate("/settings");
     },
     onError: (error: { response?: { data?: { message?: string } } }) => {
-      const message = error?.response?.data?.message || 'Error al cambiar la contraseña'
-      toast.error(message)
-      console.error(error)
+      const message =
+        error?.response?.data?.message || "Error al cambiar la contraseña";
+      toast.error(message);
+      console.error(error);
     },
-  })
+  });
 
   const onSubmit = async (data: FormData) => {
     mutation.mutate({
       currentPassword: data.currentPassword,
       newPassword: data.newPassword,
-    })
-  }
+    });
+  };
 
   return (
     <motion.div
@@ -84,7 +96,7 @@ const ChangePassword = () => {
             id="currentPassword"
             type="password"
             placeholder="••••••••"
-            {...register('currentPassword')}
+            {...register("currentPassword")}
             error={errors.currentPassword?.message}
             className="bg-gray-50/80 dark:bg-gray-700/60 border-gray-200 dark:border-gray-600 focus:ring-primary"
           />
@@ -94,7 +106,7 @@ const ChangePassword = () => {
             id="newPassword"
             type="password"
             placeholder="••••••••"
-            {...register('newPassword')}
+            {...register("newPassword")}
             error={errors.newPassword?.message}
             className="bg-gray-50/80 dark:bg-gray-700/60 border-gray-200 dark:border-gray-600 focus:ring-primary"
           />
@@ -104,7 +116,7 @@ const ChangePassword = () => {
             id="confirmNewPassword"
             type="password"
             placeholder="••••••••"
-            {...register('confirmNewPassword')}
+            {...register("confirmNewPassword")}
             error={errors.confirmNewPassword?.message}
             className="bg-gray-50/80 dark:bg-gray-700/60 border-gray-200 dark:border-gray-600 focus:ring-primary"
           />
@@ -135,16 +147,18 @@ const ChangePassword = () => {
           transition={{ delay: 0.6 }}
           className="mt-6 bg-blue-50/30 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 text-sm text-blue-800 dark:text-blue-300"
         >
-          <strong>Consejos de seguridad:</strong>
+          <strong>La contraseña debe:</strong>
           <ul className="mt-1 list-disc list-inside space-y-1">
-            <li>Usa una combinación de letras, números y símbolos.</li>
-            <li>No uses contraseñas que ya hayas usado antes.</li>
-            <li>Evita información personal (nombre, fecha de nacimiento).</li>
+            <li>Tener al menos 8 caracteres</li>
+            <li>Una letra mayúscula (A-Z)</li>
+            <li>Una letra minúscula (a-z)</li>
+            <li>Un número (0-9)</li>
+            <li>Un carácter especial (!@#$%)</li>
           </ul>
         </motion.div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default ChangePassword
+export default ChangePassword;

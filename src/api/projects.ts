@@ -47,8 +47,8 @@ export const deleteProject = async (id: string): Promise<void> => {
   await api.delete(`/projects/${id}`)
 }
 
-export const getUserProjects = async (userId: string, pageNumber = 1, pageSize = 10): Promise<ProjectListItem[]> => {
-  const response = await api.get<ProjectListItem[]>(`/projects/user/${userId}`, {
+export const getUserProjects = async (userId: string, pageNumber = 1, pageSize = 10): Promise<ProjectsResponse> => {
+  const response = await api.get<ProjectsResponse>(`/projects/user/${userId}`, {
     params: { pageNumber, pageSize }
   })
   return response.data

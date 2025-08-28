@@ -17,6 +17,9 @@ const Projects = lazy(() => import('../pages/Projects/Projects'))
 const ProjectDetail = lazy(() => import('../pages/Projects/ProjectDetail'))
 const CreateProject = lazy(() => import('../pages/Projects/Create'))
 const Explore = lazy(() => import('../pages/Explore'))
+const AuthCallback = lazy(() => import('../pages/GitHub/AuthCallback'))
+const ImportGitHubProjects = lazy(() => import('../pages/GitHub/ImportGitHubProjects'))
+
 
 function AppRoutes() {
   return (
@@ -37,6 +40,8 @@ function AppRoutes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings/password" element={<ChangePassword />} />
+          <Route path="/auth/github/callback" element={<AuthCallback />} />
+          <Route path="/github/import" element={<ImportGitHubProjects />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

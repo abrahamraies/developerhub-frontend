@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../api/auth";
-import { getProjects } from "../api/projects";
+import { getUserProjects } from "../api/projects";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { motion } from "framer-motion";
 import Button from "../components/ui/Button";
@@ -16,7 +16,7 @@ const Dashboard = () => {
 
   const { data: projectsData, isLoading: projectsLoading } = useQuery({
     queryKey: ['userProjects'],
-    queryFn: () => getProjects(),
+    queryFn: () => getUserProjects(user!.id),
     enabled: !!user,
   })
 

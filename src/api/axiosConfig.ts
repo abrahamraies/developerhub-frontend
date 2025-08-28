@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import useAuthStore from '../stores/authStore'
-import type { ApiError } from '../types'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'https://localhost:7265/api',
@@ -25,9 +24,6 @@ api.interceptors.response.use(
       toast.error('Sesión expirada, por favor inicia sesión nuevamente')
       useAuthStore.getState().logout()
       window.location.href = '/login'
-    } else if (error.response?.data) {
-      const apiError = error.response.data as ApiError
-      toast.error(apiError.Message || 'Error en la solicitud')
     }
     return Promise.reject(error)
   }

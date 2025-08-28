@@ -36,8 +36,8 @@ const useAuthStore = create<AuthState>()(
           token: null,
           isAuthenticated: false,
         })
-        localStorage.removeItem('auth-storage')
         window.location.href = '/'
+        localStorage.removeItem('auth-storage')
       }
     }),
     {
