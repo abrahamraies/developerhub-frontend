@@ -1,8 +1,17 @@
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import type { ProjectListItem } from "../../types";
+import { Link } from "react-router-dom"
+import { motion } from "framer-motion"
+import type { ProjectListItem } from "../../types"
+import useAuthStore from "../../stores/authStore"
 
-const ProjectCard = ({ project }: { project: ProjectListItem }) => {
+interface ProjectCardProps {
+  project: ProjectListItem
+}
+
+const ProjectCard = ({ project }: ProjectCardProps) => {
+  const { id: currentUserId } = useAuthStore()
+
+  const isOwner = currentUserId === project.ownerId
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -32,14 +41,18 @@ const ProjectCard = ({ project }: { project: ProjectListItem }) => {
           </span>
         </div>
 
-        {project.description && (
+        {project.description ? (
           <p className="mt-3 text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
             {project.description}
+          </p>
+        ) : (
+          <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 italic">
+            Sin descripción
           </p>
         )}
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
+          {project.tags.map((tag: string) => (
             <span
               key={tag}
               className="px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-medium border border-blue-200 dark:border-blue-800"
@@ -50,15 +63,28 @@ const ProjectCard = ({ project }: { project: ProjectListItem }) => {
         </div>
 
         <div className="mt-5 flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-4">
-          <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+          <time dateTime={project.createdAt}>
+            {new Date(project.createdAt).toLocaleDateString()}
+          </time>
           <span>
             {project.commentCount}{" "}
             {project.commentCount === 1 ? "comentario" : "comentarios"}
           </span>
         </div>
+
+        {isOwner && (
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <Link
+              to={`/projects/${project.id}/edit`}
+              className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+            >
+              Editar proyecto
+            </Link>
+          </div>
+        )}
       </div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default ProjectCard;
+export default ProjectCard

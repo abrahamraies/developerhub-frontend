@@ -1,12 +1,13 @@
 import api from './axiosConfig'
-import type { LoginResponse, RegisterResponse, ApiError, User, ChangePasswordData } from '../types'
+import type { LoginResponse, RegisterResponse, User, ChangePasswordData } from '../types'
+import type { AxiosError } from 'axios'
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {
     const response = await api.post<LoginResponse>('/auth/login', { email, password })
     return response.data
   } catch (error) {
-    const apiError = error as ApiError
+    const apiError = error as AxiosError
     throw apiError
   }
 }
@@ -16,7 +17,7 @@ export const register = async (username: string, email: string, password: string
     const response = await api.post<RegisterResponse>('/auth/register', { username, email, password })
     return response.data
   } catch (error) {
-    const apiError = error as ApiError
+    const apiError = error as AxiosError
     throw apiError
   }
 }
@@ -41,5 +42,17 @@ export const changePassword = async (data: ChangePasswordData) => {
 
 export const exchangeCodeForToken = async (code: string) => {
   const response = await api.post('/auth/github/callback', { code })
+  return response.data
+}
+
+export const verifyEmail = async (token: string) => {
+  const response = await api.get('/auth/verify-email', {
+    params: { token }
+  })
+  return response.data
+}
+
+export const resendVerificationEmail = async (email: string) => {
+  const response = await api.post('/auth/resend-verification', { email })
   return response.data
 }

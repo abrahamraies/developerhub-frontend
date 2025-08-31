@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import ThemeToggle from "../../components/ui/ThemeToggle";
 import useAuthStore from "../../stores/authStore";
 import { getMe } from "../../api/auth";
+import { useEffect } from "react";
 
 const schema = yup.object().shape({
   username: yup
@@ -34,13 +35,23 @@ const Settings = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      username: user?.username || "",
-      profileImageUrl: user?.profileImageUrl || "",
+      username: "",
+      profileImageUrl: "",
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        username: user.username,
+        profileImageUrl: user.profileImageUrl ?? "",
+      });
+    }
+  }, [user, reset]);
 
   const updateMutation = useMutation({
     mutationFn: (data: FormData) => {
@@ -67,6 +78,7 @@ const Settings = () => {
   };
 
   if (!isAuthenticated) return <LoadingSpinner />;
+  if (!user) return <LoadingSpinner />
 
   return (
     <motion.div
@@ -126,11 +138,11 @@ const Settings = () => {
             {localStorage.getItem("github_access_token") ? (
               <Button
                 variant="secondary"
-                className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm transition-colors rounded-lg"
                 to="/import/github"
               >
                 <svg
-                  className="h-5 w-5"
+                  className="h-5 w-5 mr-2"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >

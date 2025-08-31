@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProjects } from "../../api/projects";
+import { getUserProjects } from "../../api/projects";
 import ProjectCard from "../../features/Projects/ProjectCard";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -9,13 +9,20 @@ import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import { toast } from "react-hot-toast";
 import type { ProjectsResponse } from "../../types";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { getMe } from "../../api/auth";
+import { isGitHubConnected } from "../../utils/github";
+import GitHubImportButton from "../../components/Modal/GitHubImportButton";
 
 const Projects = () => {
   const navigate = useNavigate();
+  const { data: user } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: getMe,
+  });
   const [page, setPage] = useState(1);
   const { data, isLoading, isError } = useQuery<ProjectsResponse>({
     queryKey: ["projects", page],
-    queryFn: () => getProjects(page),
+    queryFn: () => getUserProjects(user!.id, page),
     placeholderData: (previousData) => previousData,
   });
 
@@ -50,23 +57,17 @@ const Projects = () => {
           className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8"
         >
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-            Proyectos Compartidos
+            Proyectos Creados
           </h1>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <Button
-            variant="secondary"
-            onClick={() => window.history.back()}
-            onMouseDown={(e: { preventDefault: () => void }) => {
-              if (window.history.length === 1) {
-                e.preventDefault();
-                navigate("/dashboard");
-              }
-            }}
-            className="cursor-pointer flex items-center gap-2 px-4 py-2 text-sm bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-white/20 dark:border-gray-700 hover:shadow-md transition-all"
-          >
-            <ArrowLeftIcon className="h-4 w-4" />
-            Volver
-          </Button>
+              variant="secondary"
+              onClick={() => navigate("/dashboard")}
+              className="cursor-pointer flex items-center gap-2 px-4 py-2 text-sm bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-white/20 dark:border-gray-700 hover:shadow-md transition-all"
+            >
+              <ArrowLeftIcon className="h-4 w-4" />
+              Volver al dashboard
+            </Button>
 
             <Link to="/projects/create">
               <Button
@@ -76,6 +77,10 @@ const Projects = () => {
                 + Nuevo Proyecto
               </Button>
             </Link>
+
+            {isGitHubConnected() && (
+              <GitHubImportButton>Importar desde GitHub</GitHubImportButton>
+            )}
           </div>
         </motion.div>
 
@@ -159,7 +164,7 @@ const Projects = () => {
             <Link to="/projects/create">
               <Button
                 variant="primary"
-                className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all"
+                className="cursor-pointer px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all"
               >
                 Crear tu primer proyecto
               </Button>

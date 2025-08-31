@@ -81,7 +81,7 @@ const ForgotPassword = () => {
                 type="submit"
                 variant="primary"
                 loading={loading}
-                className="w-full py-3 text-lg bg-gradient-to-r from-blue-600 to-purple-600 
+                className="cursor-pointer w-full py-3 text-lg bg-gradient-to-r from-blue-600 to-purple-600 
                           hover:from-blue-700 hover:to-purple-700 
                           transform hover:scale-[1.02] transition-all duration-200
                           shadow-md hover:shadow-lg"

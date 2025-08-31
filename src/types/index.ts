@@ -12,7 +12,7 @@ export type Project = {
   id: string
   title: string
   description: string
-  gitHubUrl: string | null
+  gitHubUrl: string
   discordUrl: string | null
   ownerId: string
   ownerUsername: string
@@ -21,10 +21,19 @@ export type Project = {
   comments: Comment[]
 }
 
+export type UpdateProjectDto = {
+  title?: string
+  description?: string
+  gitHubUrl?: string
+  discordUrl?: string
+  tags?: string[]
+}
+
 export type ProjectListItem = {
   id: string
   title: string
   description: string
+  ownerId: string
   ownerUsername: string
   ownerProfileImageUrl: string | null
   createdAt: string
@@ -65,12 +74,6 @@ export type LoginResponse = {
 }
 
 export type RegisterResponse = LoginResponse
-
-export type ApiError = {
-  StatusCode: number
-  Message: string
-  Details?: string
-}
 
 export interface ChangePasswordData {
   currentPassword: string

@@ -7,6 +7,8 @@ import Button from "../components/ui/Button";
 import MainLayout from "../components/layout/MainLayout";
 import type { ProjectListItem } from "../types";
 import { Link } from "react-router-dom";
+import { isGitHubConnected } from "../utils/github";
+import GitHubImportButton from "../components/Modal/GitHubImportButton";
 
 const Dashboard = () => {
   const { data: user, isLoading: userLoading } = useQuery({
@@ -76,9 +78,14 @@ const Dashboard = () => {
           className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 dark:border-gray-700 overflow-hidden"
         >
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-              Tus Proyectos
-            </h2>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                Tus Proyectos
+              </h2>
+              {isGitHubConnected() && (
+                <GitHubImportButton>Importar desde GitHub</GitHubImportButton>
+              )}
+            </div>
           </div>
 
           <div className="p-6">

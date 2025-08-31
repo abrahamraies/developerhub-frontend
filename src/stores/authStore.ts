@@ -36,8 +36,8 @@ const useAuthStore = create<AuthState>()(
           token: null,
           isAuthenticated: false,
         })
-        window.location.href = '/'
         localStorage.removeItem('auth-storage')
+        localStorage.removeItem('github_access_token')
       }
     }),
     {

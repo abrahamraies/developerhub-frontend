@@ -1,5 +1,5 @@
 import api from './axiosConfig'
-import type { Project, ProjectsResponse, ProjectListItem } from '../types'
+import type { Project, ProjectsResponse, ProjectListItem, UpdateProjectDto } from '../types'
 
 export const getProjects = async (
   page = 1,
@@ -33,14 +33,9 @@ export const createProject = async (data: {
   return response.data
 }
 
-export const updateProject = async (id: string, data: {
-  title?: string
-  description?: string
-  gitHubUrl?: string
-  discordUrl?: string
-  tags?: string[]
-}): Promise<void> => {
-  await api.put(`/projects/${id}`, data)
+export const updateProject = async (id: string, data: UpdateProjectDto) => {
+  const response = await api.put(`/projects/${id}`, data)
+  return response.data
 }
 
 export const deleteProject = async (id: string): Promise<void> => {

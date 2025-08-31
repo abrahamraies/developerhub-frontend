@@ -1,40 +1,46 @@
-import { useQuery } from '@tanstack/react-query'
-import { getMe } from '../../api/auth'
-import { getProjects } from '../../api/projects'
-import LoadingSpinner from '../../components/ui/LoadingSpinner'
-import { motion } from 'framer-motion'
-import Button from '../../components/ui/Button'
+import { useQuery } from "@tanstack/react-query";
+import { getMe } from "../../api/auth";
+import { getUserProjects } from "../../api/projects";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import { motion } from "framer-motion";
+import Button from "../../components/ui/Button";
+import { getUserComments } from "../../api/comments";
 
 const Profile = () => {
   const { data: user, isLoading: userLoading } = useQuery({
-    queryKey: ['currentUser'],
+    queryKey: ["currentUser"],
     queryFn: getMe,
-  })
+  });
 
   const { data: projectsData } = useQuery({
-    queryKey: ['userProjects'],
-    queryFn: () => getProjects(),
+    queryKey: ["userProjects"],
+    queryFn: () => getUserProjects(user!.id),
     enabled: !!user,
-  })
+  });
 
-  const projects = projectsData?.items || []
+  const { data: comments } = useQuery({
+    queryKey: ["userComments", user?.id],
+    queryFn: () => getUserComments(user!.id),
+    enabled: !!user,
+  });
 
-  if (userLoading) return <LoadingSpinner />
-  console.log(user)
+  const projects = projectsData?.items || [];
+  const commentCount = comments?.length || 0;
+
+  if (userLoading) return <LoadingSpinner />;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
     >
-
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300/10 dark:bg-blue-700/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300/10 dark:bg-purple-700/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -43,7 +49,10 @@ const Profile = () => {
         >
           <div className="relative inline-block mx-auto">
             <img
-              src={user?.profileImageUrl || `https://i.pravatar.cc/150?u=${user?.id}`}
+              src={
+                user?.profileImageUrl ||
+                `https://i.pravatar.cc/150?u=${user?.id}`
+              }
               alt="Foto de perfil"
               className="w-24 h-24 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-lg"
             />
@@ -59,21 +68,22 @@ const Profile = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10"
         >
           <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700 text-center">
-            <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">{projects.length}</h3>
-            <p className="text-gray-600 dark:text-gray-300">Proyectos</p>
+            <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {projects.length}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              Proyectos creados
+            </p>
           </div>
 
           <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700 text-center">
-            <h3 className="text-2xl font-bold text-purple-600 dark:text-purple-400">3</h3>
-            <p className="text-gray-600 dark:text-gray-300">Colaboraciones</p>
-          </div>
-
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700 text-center">
-            <h3 className="text-2xl font-bold text-green-600 dark:text-green-400">7</h3>
-            <p className="text-gray-600 dark:text-gray-300">Contribuciones</p>
+            <h3 className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              {commentCount}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">Comentarios hechos</p>
           </div>
         </motion.div>
 
@@ -84,16 +94,21 @@ const Profile = () => {
           className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 dark:border-gray-700 overflow-hidden"
         >
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Información del Perfil</h2>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+              Información del Perfil
+            </h2>
           </div>
 
           <div className="p-6 space-y-4 text-gray-700 dark:text-gray-300">
             <div>
-              <strong className="text-gray-900 dark:text-white">Nombre de usuario:</strong>{' '}
+              <strong className="text-gray-900 dark:text-white">
+                Nombre de usuario:
+              </strong>{" "}
               {user?.username}
             </div>
             <div>
-              <strong className="text-gray-900 dark:text-white">Email:</strong> {user?.email}
+              <strong className="text-gray-900 dark:text-white">Email:</strong>{" "}
+              {user?.email}
             </div>
           </div>
         </motion.div>
@@ -121,7 +136,7 @@ const Profile = () => {
         </motion.div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

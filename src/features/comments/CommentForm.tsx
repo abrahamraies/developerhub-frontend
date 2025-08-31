@@ -5,9 +5,9 @@ import * as yup from 'yup'
 import { createComment } from '../../api/comments'
 import { toast } from 'react-hot-toast'
 import Button from '../../components/ui/Button'
-import type { ApiError } from '../../types'
 import { motion } from 'framer-motion'
 import { useQueryClient } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 
 const schema = yup.object().shape({
   content: yup
@@ -35,13 +35,14 @@ const CommentForm = ({ projectId }: { projectId: string }) => {
       await createComment(projectId, data.content)
       toast.success('Comentario agregado')
 
-      // ✅ Invalidamos la query de comentarios del proyecto
       await queryClient.invalidateQueries({ queryKey: ['project', projectId] })
 
       reset()
-    } catch (error) {
-      const apiError = error as ApiError
-      toast.error(apiError.Message || 'Error al agregar comentario')
+    } catch (err) {
+      const error = err as AxiosError;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const backendMessage = (error.response?.data as any)?.message;
+      toast.error(backendMessage || 'Error al agregar comentario')
     }
   }
 
