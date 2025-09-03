@@ -8,7 +8,7 @@ import MainLayout from "../components/layout/MainLayout";
 import type { ProjectListItem } from "../types";
 import { Link } from "react-router-dom";
 import { isGitHubConnected } from "../utils/github";
-import GitHubImportButton from "../components/Modal/GitHubImportButton";
+import GitHubImportButton from "../components/modal/GitHubImportButton";
 
 const Dashboard = () => {
   const { data: user, isLoading: userLoading } = useQuery({

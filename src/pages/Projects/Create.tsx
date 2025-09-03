@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import CreateProjectForm from '../../features/Projects/CreateProjectForm'
+import CreateProjectForm from '../../features/projects/CreateProjectForm'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import Button from '../../components/ui/Button'

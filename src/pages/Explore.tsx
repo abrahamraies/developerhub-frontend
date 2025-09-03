@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "../api/projects";
-import ProjectCard from "../features/Projects/ProjectCard";
+import ProjectCard from "../features/projects/ProjectCard";
 import { motion } from "framer-motion";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
@@ -110,7 +110,7 @@ const Explore = () => {
             </label>
             <Input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
               placeholder="Buscar por título o descripción..."
               className="w-full bg-gray-50/80 dark:bg-gray-700/60 border-gray-200 dark:border-gray-600 focus:ring-primary"
             />

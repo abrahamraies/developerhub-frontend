@@ -53,7 +53,6 @@ const LoginForm = () => {
         id="email"
         type="email"
         placeholder="tu@email.com"
-        // value="admin@developerhub.com"
         {...register("email")}
         error={errors.email?.message}
         className="bg-gray-50/80 dark:bg-gray-700/60 border-gray-200 dark:border-gray-600 focus:ring-primary"
@@ -64,7 +63,6 @@ const LoginForm = () => {
         id="password"
         type="password"
         placeholder="••••••••"
-        value="123456asdF$"
         {...register("password")}
         error={errors.password?.message}
         className="bg-gray-50/80 dark:bg-gray-700/60 border-gray-200 dark:border-gray-600 focus:ring-primary"

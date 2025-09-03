@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUserProjects } from "../../api/projects";
-import ProjectCard from "../../features/Projects/ProjectCard";
+import ProjectCard from "../../features/projects/ProjectCard";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ import type { ProjectsResponse } from "../../types";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { getMe } from "../../api/auth";
 import { isGitHubConnected } from "../../utils/github";
-import GitHubImportButton from "../../components/Modal/GitHubImportButton";
+import GitHubImportButton from "../../components/modal/GitHubImportButton";
 
 const Projects = () => {
   const navigate = useNavigate();

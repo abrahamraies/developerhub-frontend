@@ -1,5 +1,5 @@
 import api from './axiosConfig'
-import type { Project, ProjectsResponse, ProjectListItem, UpdateProjectDto } from '../types'
+import type { Project, ProjectsResponse, UpdateProjectDto } from '../types'
 
 export const getProjects = async (
   page = 1,
@@ -44,13 +44,6 @@ export const deleteProject = async (id: string): Promise<void> => {
 
 export const getUserProjects = async (userId: string, pageNumber = 1, pageSize = 10): Promise<ProjectsResponse> => {
   const response = await api.get<ProjectsResponse>(`/projects/user/${userId}`, {
-    params: { pageNumber, pageSize }
-  })
-  return response.data
-}
-
-export const getProjectsByTag = async (tagName: string, pageNumber = 1, pageSize = 10): Promise<ProjectListItem[]> => {
-  const response = await api.get<ProjectListItem[]>(`/projects/tag/${tagName}`, {
     params: { pageNumber, pageSize }
   })
   return response.data
