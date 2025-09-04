@@ -14,7 +14,7 @@ import {
 import Button from "../../components/ui/Button";
 import useAuthStore from "../../stores/authStore";
 import { useState } from "react";
-import ConfirmModal from "../../components/modal/ConfirmModal";
+import ConfirmModal from "../../components/Modal/ConfirmModal";
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
