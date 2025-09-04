@@ -8,7 +8,7 @@ import MainLayout from "../components/layout/MainLayout";
 import type { ProjectListItem } from "../types";
 import { Link } from "react-router-dom";
 import { isGitHubConnected } from "../utils/github";
-import GitHubImportButton from "../components/Modal/GitHubImportButton";
+import GitHubImportButton from "../components/modal/GitHubImportButton";
 
 const Dashboard = () => {
   const { data: user, isLoading: userLoading } = useQuery({
@@ -17,12 +17,12 @@ const Dashboard = () => {
   });
 
   const { data: projectsData, isLoading: projectsLoading } = useQuery({
-    queryKey: ['userProjects'],
+    queryKey: ["userProjects"],
     queryFn: () => getUserProjects(user!.id),
     enabled: !!user,
-  })
+  });
 
-  const projects = projectsData?.items || []
+  const projects = projectsData?.items || [];
 
   if (userLoading) return <LoadingSpinner />;
 
@@ -61,13 +61,21 @@ const Dashboard = () => {
           </div>
 
           <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700 text-center">
-            <h3 className="text-2xl font-bold text-purple-600 dark:text-purple-400">🔍</h3>
-            <p className="text-gray-600 dark:text-gray-300">Descubre nuevos proyectos en la comunidad</p>
+            <h3 className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              🔍
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              Descubre nuevos proyectos en la comunidad
+            </p>
           </div>
 
           <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700 text-center">
-            <h3 className="text-2xl font-bold text-green-600 dark:text-green-400">💬</h3>
-            <p className="text-gray-600 dark:text-gray-300">Conéctate con otros devs en Discord</p>
+            <h3 className="text-2xl font-bold text-green-600 dark:text-green-400">
+              💬
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              Conéctate con otros devs en Discord
+            </p>
           </div>
         </motion.div>
 
@@ -94,25 +102,25 @@ const Dashboard = () => {
                 Cargando proyectos...
               </p>
             ) : projects.length > 0 ? (
-                <ul className="space-y-4">
-                  {projects.map((project: ProjectListItem) => (
-                    <li
-                      key={project.id}
-                      className="p-5 bg-gray-50/50 dark:bg-gray-700/30 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
-                    >
-                      <Link to={`/projects/${project.id}`} className="block">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="font-medium text-gray-800 dark:text-white hover:underline">
-                              {project.title}
-                            </h3>
-                          </div>
+              <ul className="space-y-4">
+                {projects.map((project: ProjectListItem) => (
+                  <li
+                    key={project.id}
+                    className="p-5 bg-gray-50/50 dark:bg-gray-700/30 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                  >
+                    <Link to={`/projects/${project.id}`} className="block">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h3 className="font-medium text-gray-800 dark:text-white hover:underline">
+                            {project.title}
+                          </h3>
                         </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
               <div className="text-center py-6">
                 <p className="text-gray-500 dark:text-gray-400 mb-5">
                   No tienes proyectos aún.

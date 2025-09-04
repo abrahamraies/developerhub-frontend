@@ -11,7 +11,7 @@ import type { ProjectsResponse } from "../../types";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { getMe } from "../../api/auth";
 import { isGitHubConnected } from "../../utils/github";
-import GitHubImportButton from "../../components/Modal/GitHubImportButton";
+import GitHubImportButton from "../../components/modal/GitHubImportButton";
 
 const Projects = () => {
   const navigate = useNavigate();
