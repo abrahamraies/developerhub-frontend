@@ -1,69 +1,64 @@
-# React + TypeScript + Vite
+# DeveloperHub Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el frontend de DeveloperHub, una plataforma para que los desarrolladores muestren sus proyectos y colaboren.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   Autenticación de usuario (inicio de sesión, registro, restablecimiento de contraseña)
+*   Explorar y descubrir proyectos
+*   Crear, editar y eliminar proyectos
+*   Comentar en proyectos
+*   Importar proyectos desde GitHub
+*   Perfiles de usuario y configuraciones
 
-## Expanding the ESLint configuration
+## Empezando
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para fines de desarrollo y pruebas.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerrequisitos
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+*   Node.js y npm (o yarn/pnpm)
+*   Un servidor backend en funcionamiento (o un servidor simulado)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Instalación
+
+1.  Clona el repositorio
+    ```sh
+    git clone https://github.com/your_username_/developerhub-frontend-1.git
+    ```
+2.  Instala los paquetes de NPM
+    ```sh
+    npm install
+    ```
+3.  Crea un archivo `.env` en la raíz del proyecto y agrega las variables de entorno necesarias.
+
+### Ejecutando la aplicación
+
+```sh
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Esto ejecutará la aplicación en modo de desarrollo. Abre [http://localhost:5173](http://localhost:5173) para verla en el navegador.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts Disponibles
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+En el directorio del proyecto, puedes ejecutar:
+
+*   `npm run dev`: Ejecuta la aplicación en modo de desarrollo.
+*   `npm run build`: Compila la aplicación para producción en la carpeta `dist`.
+*   `npm run lint`: Analiza el código con ESLint.
+*   `npm run preview`: Sirve la compilación de producción localmente.
+
+## Tecnologías Utilizadas
+
+*   **Framework:** [React](https://reactjs.org/)
+*   **Herramienta de Compilación:** [Vite](https://vitejs.dev/)
+*   **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+*   **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Enrutamiento:** [React Router](https://reactrouter.com/)
+*   **Manejo de Estado:** [Zustand](https://zustand-demo.pmnd.rs/)
+*   **Obtención de Datos:** [React Query](https://tanstack.com/query/v5) y [Axios](https://axios-http.com/)
+*   **Manejo de Formularios:** [React Hook Form](https://react-hook-form.com/)
+*   **Validación de Esquemas:** [Yup](https://github.com/jquense/yup)
+*   **Componentes de UI:** [Heroicons](https://heroicons.com/)
+*   **Notificaciones:** [React Hot Toast](https://react-hot-toast.com/)
